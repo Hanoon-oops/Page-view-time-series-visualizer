@@ -1,0 +1,39 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy.stats import linregress
+
+# Load sea level data (assuming the data is in a CSV file with 'Year' and 'Sea_Level' columns)
+# Replace 'sea_level_data.csv' with the path to your dataset
+df = pd.read_csv('sea_level_data.csv')
+
+# Create a scatter plot of the data
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='Year', y='Sea_Level', data=df, color='blue', label='Observed Sea Level')
+
+# Perform linear regression on the entire dataset
+slope, intercept, r_value, p_value, std_err = linregress(df['Year'], df['Sea_Level'])
+
+# Predict future sea levels (you can change the range based on the years you want to predict)
+years_extended = pd.Series(range(1880, 2100))  # Assuming historical data starts in 1880
+sea_level_pred = intercept + slope * years_extended
+
+# Plot the linear regression line for the full dataset
+plt.plot(years_extended, sea_level_pred, color='red', label='Linear Regression (1880-2100)')
+
+# Add titles and labels
+plt.title('Sea Level Prediction')
+plt.xlabel('Year')
+plt.ylabel('Sea Level (inches)')
+
+# Show grid and legend
+plt.grid(True)
+plt.legend()
+
+# Show the plot
+plt.tight_layout()
+plt.show()
+
+# Optionally, you can print out the slope and intercept for the regression line
+print(f"Slope: {slope} inches/year")
+print(f"Intercept: {intercept} inches")
